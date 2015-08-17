@@ -54,7 +54,7 @@ module Ninja
               f.write "  deps = gcc\n"
             elsif rule.dependencies == :msvc
               # TODO(mtwilliams): Handle non-English output.
-              f.write "  msvc_deps_prefix = Note: including file: \n"
+              # f.write "  msvc_deps_prefix = Note: including file: \n"
               f.write "  deps = msvc\n"
             else
               f.write "  depfile = #{rule.dependencies}\n"
