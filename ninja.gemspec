@@ -2,7 +2,7 @@ $:.push File.expand_path(File.join(File.dirname(__FILE__), 'lib'))
 require 'ninja/version'
 
 Gem::Specification.new do |s|
-  s.name              = 'ninja'
+  s.name              = 'ninja-gen'
   s.version           = Ninja.version
   s.platform          = Gem::Platform::RUBY
   s.author            = 'Michael Williams'

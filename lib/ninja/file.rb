@@ -26,7 +26,8 @@ module Ninja
     end
 
     def default(outputs)
-      raise "Expected output(s) to be paths." unless [*outputs].all?{|output| /\A(?:[-\w\.]+\/?)+\z/.match(output)}
+      # TODO(mtwilliams): Accept variables (\$[\w]|\$\{[\w]\}).
+      # raise "Expected output(s) to be paths." unless [*outputs].all?{|output| /\A(?:[-\w\.]+\/?)+\z/.match(output)}
       @defaults.push(*outputs)
     end
 
@@ -43,6 +44,7 @@ module Ninja
           # TODO(mtwilliams): Escape.
           f.write "#{variable.name} = #{variable.value}\n"
         end
+        f.write "\n" unless @variables.empty?
 
         @rules.each do |rule|
           f.write "rule #{rule.name}\n"
@@ -64,9 +66,11 @@ module Ninja
         @builds.each do |build|
           f.write "build #{build.output}: #{build.rule} #{build.inputs.join(' ')}\n"
         end
-        f.write "\n" unless @builds.empty?
 
-        f.write "default #{@defaults.join(' ')}\n" unless @defaults.empty?
+        unless @defaults.empty?
+          f.write "\n" unless @builds.empty?
+          f.write "default #{@defaults.join(' ')}\n" unless @defaults.empty?
+        end
 
         # TODO(mtwilliams): Aliases (via the 'phony' rule).
         # TODO(mtwilliams): Execute other files (via 'subninja').
