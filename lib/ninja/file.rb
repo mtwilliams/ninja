@@ -25,7 +25,7 @@ module Ninja
       end
     end
 
-    def default(outputs)
+    def defaults(outputs)
       # TODO(mtwilliams): Accept variables (\$[\w]|\$\{[\w]\}).
       # raise "Expected output(s) to be paths." unless [*outputs].all?{|output| /\A(?:[-\w\.]+\/?)+\z/.match(output)}
       @defaults.push(*outputs)
