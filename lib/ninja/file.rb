@@ -27,7 +27,7 @@ module Ninja
 
     def alias(from, to)
       # Pretty clever, huh?
-      @builds.push(Ninja::Build.new(:rule => 'phony', :inputs => [to], :output => from))
+      @builds.push(Ninja::Build.new(:rule => 'phony', :inputs => [*to], :output => from))
     end
 
     def defaults(outputs)
