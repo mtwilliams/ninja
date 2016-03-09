@@ -25,6 +25,11 @@ module Ninja
       end
     end
 
+    def alias(from, to)
+      # Pretty clever, huh?
+      @builds.push(Ninja::Build.new(:rule => 'phony', :inputs => to, :output => from))
+    end
+
     def defaults(outputs)
       # TODO(mtwilliams): Accept variables (\$[\w]|\$\{[\w]\}).
       # raise "Expected output(s) to be paths." unless [*outputs].all?{|output| /\A(?:[-\w\.]+\/?)+\z/.match(output)}
@@ -72,7 +77,6 @@ module Ninja
           f.write "default #{@defaults.join(' ')}\n" unless @defaults.empty?
         end
 
-        # TODO(mtwilliams): Aliases (via the 'phony' rule).
         # TODO(mtwilliams): Execute other files (via 'subninja').
         # TODO(mtwilliams): Specify pools, to optimize compilation times.
       end
