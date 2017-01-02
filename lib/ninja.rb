@@ -11,10 +11,10 @@
 # ===----------------------------------------------------------------------=== #
 
 module Ninja
-  require 'ninja/version'
-  require 'ninja/delegator'
-  require 'ninja/variable'
-  require 'ninja/rule'
-  require 'ninja/build'
-  require 'ninja/file'
+  require_relative 'ninja/version'
+  require_relative 'ninja/delegator'
+  require_relative 'ninja/variable'
+  require_relative 'ninja/rule'
+  require_relative 'ninja/build'
+  require_relative 'ninja/file'
 end
