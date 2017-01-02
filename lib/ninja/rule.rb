@@ -2,7 +2,8 @@ module Ninja
   class Rule
     attr_reader :name,
                 :command,
-                :dependencies
+                :dependencies,
+                :response_file
 
     def initialize(desc={})
       Description.validate!(desc)
@@ -10,6 +11,7 @@ module Ninja
       @name = desc[:name]
       @command = desc[:command]
       @dependencies = desc[:dependencies]
+      @response_file = desc[:response_file]
     end
 
     module Description #:nodoc:
@@ -19,8 +21,9 @@ module Ninja
          raise "Expected name to be a string composed of [a-Z,0-9,-,_] characters." unless /\A([-\w]+?)+\z/.match(desc[:name])
 
         raise "Command not specified." unless desc.include?(:command)
-         raise "Input not used by the command." unless desc[:command].include? '$in'
-         raise "Output not used by the command." unless desc[:command].include? '$out'
+         # TODO(mtwilliams): Check response file.
+         # raise "Input not used by the command." unless desc[:command].include? '$in'
+         # raise "Output not used by the command." unless desc[:command].include? '$out'
 
         if desc[:dependencies]
           if desc[:dependencies].is_a?(String)
@@ -29,6 +32,10 @@ module Ninja
           else
             raise "Expected dependencies to be name or auto-detection method."
           end
+        end
+
+        if desc[:response_file]
+          raise "Expected a `Ninja::Responsefile`." unless desc[:response_file].is_a?(ResponseFile)
         end
       end
     end

@@ -14,9 +14,16 @@ module Ninja
     end
 
     def rule(name, command, opts={})
+      additional = {}
+
+      if opts[:response_file]
+        additional[:response_file] = Ninja::ResponseFile.new("$out.rsp", opts[:response_file])
+      end
+
       @rules.push(Ninja::Rule.new(:name => name,
                                   :command => command,
-                                  :dependencies => opts[:dependencies]))
+                                  :dependencies => opts[:dependencies],
+                                  **additional))
     end
 
     def build(rule, outputs_to_inputs={})
@@ -65,7 +72,12 @@ module Ninja
               f.write "  depfile = #{rule.dependencies}\n"
             end
           end
-          f.write "  command = #{rule.command}\n\n"
+          f.write "  command = #{rule.command}\n"
+          if rule.response_file
+            f.write "  rspfile = #{rule.response_file.name}\n"
+            f.write "  rspfile_content = #{rule.response_file.contents}\n"
+          end
+          f.write "\n"
         end
 
         @builds.each do |build|

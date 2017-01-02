@@ -14,6 +14,7 @@ module Ninja
   require_relative 'ninja/version'
   require_relative 'ninja/delegator'
   require_relative 'ninja/variable'
+  require_relative 'ninja/response_file'
   require_relative 'ninja/rule'
   require_relative 'ninja/build'
   require_relative 'ninja/file'
